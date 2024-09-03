@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+
+        function getEmail(login) {
+            var email= document.getElementById("email").value;
+         $.ajax({
+                url: "http://localhost:8080/checkEmail/"+email,
+                type: 'GET',
+                dataType: 'html',
+
+                success: function(response) {
+                if(response=="true"){
+                    alert("Email already exist");
+                }
+               }
+             });
+
+        }
+        function getData() {
+            var phone= document.getElementById("phone").value;
+            $.ajax({
+                url: "http://localhost:8080/checkEmail/",
+                type: 'GET',
+                dataType: 'json',
+
+                success: function(data) {
+
+                for(var i=0; i<data.length ; i++){
+                   console.log(data[i].phone);
+                   var phn = data[i].phone;
+                   if(phone== phn){
+                    alert("Phone no. exist. Choose another...");
+                   }else{
+                    alert("Saved successfully");
+                   }
+                    }
+                   }
+                })
+
+
+            }
+             ;
+
+    </script>
+
+</head>
+<body>
+
+Email <input type="text" name="email" id="email"/>
+Phone <input type="phone" name="phone" id="phone"/>
+<!-- <input type="button" id="btn" name="btn" value="login"/> -->
+<script>
+    $(document).ready(function (){
+        $('#email').change(function() {
+            var email= document.getElementById("email").value;
+
+        getEmail(email);
+        $('#phone').change(function() {
+            getData();
+        });
+    })
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,137 @@
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function test() {
+            var pin = document.getElementById("pin").value;
+            var pinformat = /^\d{6}$/;
+            var state = document.getElementById("state");
+            var city = document.getElementById("city");
+            var add = document.getElementById("add").value.length;
+            if (!pin.match(pinformat)) {
+
+                document.getElementById("span_pin").innerHTML = "Enter valid pin!";
+                document.getElementById("pin").focus();
+                return false;
+            } else {
+                document.getElementById("span_pin").innerHTML = "";
+            }
+            if (state.selectedIndex == 0) {
+
+                document.getElementById("span_state").innerHTML = "Select your state!";
+                document.getElementById("state").focus();
+                return false;
+            } else {
+                document.getElementById("span_state").innerHTML = "";
+            }
+            if (city.selectedIndex == 0) {
+
+                document.getElementById("span_city").innerHTML = "Select your city!";
+                document.getElementById("city").focus();
+                return false;
+            } else {
+                document.getElementById("span_city").innerHTML = "";
+            }
+            if (add <= 0) {
+                document.getElementById("span_add").innerHTML = "Enter your address!";
+                document.getElementById("add").focus();
+                return false;
+            } else {
+                document.getElementById("span_add").innerHTML = "";
+            }
+            postData();
+            return false;
+        }
+
+        function postData() {
+            var pin = document.getElementById("pin").value;
+            var state = document.getElementById("state").value;
+            var city = document.getElementById("city").value;
+            var add = document.getElementById("add").value;
+
+            var basicInfo = JSON.stringify({
+                "pin": pin,
+                "state": state,
+                "city": city,
+                "permanentAddress": add
+            });
+
+            $.ajax({
+
+                url: "http://localhost:8080/address/",
+                type: 'POST',
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                data: basicInfo,
+                success: function (data) {
+                    alert("Saved successfully");
+                }
+            });
+
+            return false;
+        }
+        function getData() {
+            $.ajax({
+                url: "http://localhost:8080/state/",
+                type: 'GET',
+                dataType: 'json',
+
+                success: function (data) {
+                    res = data;
+                    var selectDataHtml = '<option>---Please Select---</option>';
+                    for (var i = 0; i < data.length; i++) {
+
+                        var selectData = '<option value="' + data[i].stateTypeCode + '">' + data[i].stateTypeName + '</option>';
+                        selectDataHtml = selectDataHtml + selectData;
+                    }
+                    document.getElementById("state").innerHTML = selectDataHtml;
+
+                    console.log(selectDataHtml);
+
+                }
+            });
+            $.ajax({
+                url: "http://localhost:8080/city",
+                type: 'GET',
+                dataType: 'json',
+
+                success: function (data) {
+                    res = data;
+                    var selectDataHtml = '<option>---Please Select---</option>';
+                    for (var i = 0; i < data.length; i++) {
+
+                        var selectData = '<option value="' + data[i].cityTypeCode + '">' + data[i].cityTypeName + '</option>';
+                        selectDataHtml = selectDataHtml + selectData;
+                    }
+                    document.getElementById("city").innerHTML = selectDataHtml;
+
+                    console.log(selectDataHtml);
+
+                }
+            });
+        }
+    </script>
+</head>
+
+<body onload="getData();">
+<form name="address" id="address" method="post" onsubmit="return test();">
+    <h2>ADDRESS DETAILS</h2>
+    Pin Code<span style="color:red;">*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="pincode"
+                                                                                        id="pin" /><br><span style="color:red" id="span_pin"></span><br>
+    State<span
+        style="color:red;">*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select
+        id="state">
+
+</select><br><span style="color:red" id="span_state"></span><br>
+    City<span style="color:red;">*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select id="city">
+
+</select><br><span style="color:red" id="span_city"></span><br>
+    Address<span style="color:red;">*</span><span style="color:red" id="span_add"></span><br><textarea rows="6"
+                                                                                                       cols="50" id="add" name="add"></textarea><br>
+    <br>
+    <input type="submit" value="Next" id="button_submit">
+</form>
+</body>
+
+</html>

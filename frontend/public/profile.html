@@ -1,0 +1,99 @@
+<html>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="loginScript.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="loginScript.js"></script>
+    <link rel="stylesheet" href="moneysutra.css">
+    <style>
+        body{
+background-color:white;
+        }
+        .img{
+            background-color: white;
+            width: 50%;
+
+        }
+        .logo{
+            margin-left: 50%;
+            margin-top: 4%;
+        }
+        .about{
+            width: 100%;
+            margin-left: 20%;
+        }
+        .card{
+            padding: 2%;
+           margin-top: -0.1%;
+            margin-left: -6%;
+            box-shadow: 1px 1px 1px 1px rgba(104, 103, 103, 0.4);
+        }
+        span{
+            font-weight: 500;
+            color: rgb(1, 41, 112);
+            font-family: Poppins, sans-serif;
+            text-align: center;
+            font-size: 1.5rem;
+      }
+      .content{
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: -2%;
+       margin-left: 12%;
+
+      }
+      header{
+        margin-top: -3%;
+      }
+    </style>
+</head>
+<header><img src="logo.png"/></header>
+<body onload="return getCustomerData();">
+<div class="container-fluid">
+    <div class="content">
+        <div class="row">
+            <div class="col-lg-6 col-sm-12">
+                <div class="img">
+                    <div class="logo">
+                        <img src="profile.png" width="80%" class="img-fluid"/></div><br>
+                    <div class="about">
+                        <i>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sunt, ad dignissimos. Saepe ipsa tempora eos vitae modi dolor eum tempore? Ducimus natus possimus eum harum accusantium rem labore fugiat quasi.</i>
+                    </div>
+                </div></div>
+            <div class="col-lg-6 col-sm-12">
+                <div class="card" style="width: 28rem;">
+                    <div class="card-body">
+                        <form name="profile" id="profile" method="post">
+
+                            <table>
+                                <span>Profile Details</span><br>
+                                <hr>
+                                <tbody id="tableBody">
+                                </tbody>
+                            </table>
+
+                        </form>
+
+                    </div></div></div></div>
+    </div>
+</div>
+<script>
+    $(document).ready(function (){
+        const params = new URLSearchParams(window.location.search);
+        var id = params.get("id");
+        getCustomerData(id);
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

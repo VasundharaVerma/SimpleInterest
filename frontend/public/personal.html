@@ -1,0 +1,182 @@
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function test() {
+            var fname = document.getElementById("student_fname").value;
+            var lname = document.getElementById("student_lname").value;
+            var gender = document.getElementsByName("gender");
+            var marital = document.getElementsByName("marital");
+            var occu = document.getElementById("occu");
+            var dob = document.getElementById("student_dob").value;
+
+            if (fname == "") {
+
+                document.getElementById("student_fname").focus();
+                document.getElementById("span_fname").innerHTML = "Enter your first name!";
+                return false;
+            }else{
+                document.getElementById("span_fname").innerHTML= "";
+            }
+             if (lname == ""){
+
+                document.getElementById("student_lname").focus();
+                document.getElementById("span_lname").innerHTML = "Enter your last name!";
+                return false;
+
+            }else{
+                document.getElementById("span_lname").innerHTML = "";
+             }
+            if (dob == ""){
+
+                document.getElementById("student_dob").focus();
+                document.getElementById("span_dob").innerHTML = "Enter your date of birth!";
+                return false;
+            }else{
+                document.getElementById("span_dob").innerHTML= "";
+            }
+            if (gender[0].checked == false && gender[1].checked == false && gender[2].checked == false) {
+                 document.getElementById("span_gender").innerHTML = "Select your gender!";
+                return false;
+            }else{
+                document.getElementById("span_gender").innerHTML= "";
+            }
+            if (marital[0].checked == false && marital[1].checked == false && marital[2].checked == false) {
+
+                document.getElementById("span_marital").innerHTML = "Select your marital status!";
+                return false;
+            }else{
+                document.getElementById("span_marital").innerHTML= "";
+            }
+            if (occu.selectedIndex == 0) {
+
+                document.getElementById("span_occu").innerHTML = "Select your occupation!";
+                document.getElementById("occu").focus();
+                return false;
+            }else{
+                document.getElementById("span_occu").innerHTML= "";
+
+        }
+        postData();
+        return false;
+    }
+
+    function postData()
+    {
+        var fname = document.getElementById("student_fname").value;
+        var mname = document.getElementById("student_mname").value;
+        var lname = document.getElementById("student_lname").value;
+        var male = document.getElementById("male").checked;
+        var female = document.getElementById("female").checked;
+        var transgender = document.getElementById("transgender").checked;
+        var single = document.getElementById("single").checked;
+        var married = document.getElementById("married").checked;
+        var widow = document.getElementById("widow").checked;
+       if(male==true){
+        var gender="male"
+       }else if(female==true){
+        var gender="female"
+       }else if(transgender==true){
+        var gender="transgender"
+       }
+       if(single==true){
+        var marital="single"
+       }else if(married==true){
+        var marital="married"
+       }else if(widow==true){
+        var marital="widow"
+       }
+        var occu = document.getElementById("occu").value;
+        var dob = document.getElementById("student_dob").value;
+
+
+       var basicInfo = JSON.stringify({
+       "fname": fname,
+       "mname": mname,
+       "lname": lname,
+       "dob": dob,
+       "gender": gender,
+       "marital": marital,
+       "occu": occu,
+});
+
+$.ajax({
+   url: "http://localhost:8080/personal/",
+   type: 'POST',
+   dataType: 'json',
+   contentType: "application/json; charset=utf-8",
+   data: basicInfo,
+   success: function(data) {
+    alert("Saved successfully");
+   }
+});
+   return false;
+    }
+
+    function getData() {
+        $.ajax({
+            url: "http://localhost:8080/occupation/",
+            type: 'GET',
+            dataType: 'json',
+
+            success: function(data) {
+            res=data;
+            var selectDataHtml = '<option>---Please Select---</option>';
+            for(var i=0; i<data.length ; i++){
+
+                var selectData = '<option value="'+data[i].occupationTypeCode+'">'+ data[i].occupationTypeName+'</option>';
+                selectDataHtml = selectDataHtml + selectData;
+            }
+            document.getElementById("occu").innerHTML= selectDataHtml;
+
+           console.log(selectDataHtml);
+
+        }
+         });
+    }
+    </script>
+</head>
+
+<body onload="getData();">
+<form name="personal" id="personal" method="post" onsubmit="return test();">
+    <h2>PERSONAL DETAILS</h2>
+    First name<span
+        style="color:red;">*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input
+        type="text" name="fname" id="student_fname" />
+    <span style="color:red" id="span_fname"></span><br><br>
+    Middle name
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="mname"
+                                                                                   id="student_mname" />
+    <span style="color:red" id="span_mname"></span><br><br>
+    Last name<span
+        style="color:red;">*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input
+        type="text" name="lname" id="student_lname" />
+    <span style="color:red" id="span_lname"></span><br><br>
+
+    Date of birth<span
+        style="color:red;">*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input
+        type="date" name="dob" id="student_dob" />
+    <span style="color:red" id="span_dob"></span><br><br>
+    Gender<span style="color:red;">*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio"
+                                                                                                  name="gender" value="male" id="male">Male
+    <input type="radio" name="gender" value="female" id="female">Female
+    <input type="radio" name="gender" value="transgender" id="transgender">Transgender <span style="color:red"
+                                                                                             id="span_gender"></span><br><br>
+    Marital Status<span style="color:red;">*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input
+        type="radio" name="marital" value="single" id="single">Single
+    <input type="radio" name="marital" value="married" id="married">Married
+    <input type="radio" name="marital" value="widow" id="widow">Widow <span style="color:red"
+                                                                            id="span_marital"></span><br><br>
+    Occupation<span
+        style="color:red;">*</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<select
+        id="occu">
+
+</select>
+    <span style="color:red" id="span_occu"></span><br><br>
+    <input type="submit" value="Next" id="button_submit"><br><br>
+
+</form>
+</body>
+
+</html>
