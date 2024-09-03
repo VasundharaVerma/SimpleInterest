@@ -3,4 +3,5 @@ Build-Jdk-Spec: 21
 Implementation-Title: SimpleInterest
 Implementation-Version: 0.0.1-SNAPSHOT
 Created-By: Maven Integration for Eclipse
+Main-Class: com.agilePeople.SimpleInterest.SimpleInterestApplication
 
