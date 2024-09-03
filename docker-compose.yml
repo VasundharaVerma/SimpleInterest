@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # MySQL Database Service
+  db:
+    image: mysql:8.1
+    platform: linux/amd64
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345678
+      MYSQL_DATABASE: demo
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    networks:
+      - backend-network
+
+  # Java Backend Service
+  backend:
+    image: openjdk:21-jdk-slim
+    platform: linux/amd64
+    container_name: java-backend
+    depends_on:
+      - db
+    volumes:
+      - ./target/SimpleInterest-0.0.1-SNAPSHOT.jar:/app.jar  
+    entrypoint: ["java", "-jar", "/app.jar"]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/demo  
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 12345678
+    ports:
+      - "8080:8080"
+    networks:
+      - backend-network
+
+  # Frontend Service
+  frontend:
+    image: nginx:alpine
+    platform: linux/amd64
+    container_name: frontend-app
+    volumes:
+      - ./frontend/public:/usr/share/nginx/html  
+    ports:
+      - "80:80"
+    networks:
+      - backend-network
+
+volumes:
+  db_data:
+
+networks:
+  backend-network:
